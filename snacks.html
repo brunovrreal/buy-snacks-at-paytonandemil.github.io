@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Snacks</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: #d40000;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      display: grid;
+      place-items: center;
+    }
+    main {
+      width: min(700px, 92vw);
+      text-align: center;
+      padding: 35px 20px;
+    }
+    h1 { font-size: clamp(2.5rem, 8vw, 4.5rem); margin: 0 0 25px; }
+    .snacks { display: grid; gap: 15px; }
+    .snack {
+      background: rgba(0,0,0,.22);
+      border: 2px solid rgba(255,255,255,.7);
+      border-radius: 14px;
+      padding: 20px;
+      font-size: 1.4rem;
+      font-weight: 700;
+    }
+    .price { display: block; margin-top: 6px; font-size: 1rem; font-weight: 400; }
+    nav { margin-top: 25px; }
+    a { color: #fff; font-weight: 700; text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>SNACKS</h1>
+    <div class="snacks">
+      <div class="snack">Hershey<span class="price">50 cents</span></div>
+      <div class="snack">KitKat<span class="price">50 cents</span></div>
+      <div class="snack">Gum<span class="price">2 dollars for the full amount · 50 cents for 1 piece</span></div>
+    </div>
+    <nav><a href="index.html">Back to Home</a></nav>
+  </main>
+
+  <audio id="jane-audio" src="jane!.mp3" preload="auto"></audio>
+  <script>
+    // Browsers may block autoplay until the visitor interacts with the page.
+    const audio = document.getElementById("jane-audio");
+    audio.play().catch(() => {
+      const start = () => {
+        audio.play().catch(() => {});
+        document.removeEventListener("click", start);
+        document.removeEventListener("keydown", start);
+      };
+      document.addEventListener("click", start, { once: true });
+      document.addEventListener("keydown", start, { once: true });
+    });
+  </script>
+</body>
+</html>
