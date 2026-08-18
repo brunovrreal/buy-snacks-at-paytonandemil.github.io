@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Emil</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      width: 100%;
+      min-height: 100%;
+    }
+
+    body {
+      min-height: 100vh;
+      overflow-x: hidden;
+      background:
+        radial-gradient(circle at center, #250000 0%, #090000 45%, #000 100%);
+      color: white;
+      font-family: Arial, Helvetica, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    /* =========================
+       RED LIGHTNING BACKGROUND
+       ========================= */
+
+    .lightning {
+      position: fixed;
+      inset: 0;
+      overflow: hidden;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .bolt {
+      position: absolute;
+      width: 4px;
+      height: 300px;
+      background: #ff0000;
+      box-shadow:
+        0 0 5px #ff0000,
+        0 0 15px #ff0000,
+        0 0 35px #ff2222,
+        0 0 70px #ff0000;
+      opacity: 0;
+      transform-origin: top;
+      filter: blur(0.3px);
+    }
+
+    .bolt::before,
+    .bolt::after {
+      content: "";
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: inherit;
+      box-shadow: inherit;
+    }
+
+    .bolt::before {
+      transform: translate(25px, 70px) rotate(35deg);
+    }
+
+    .bolt::after {
+      transform: translate(-30px, 145px) rotate(-45deg);
+    }
+
+    .bolt:nth-child(1) {
+      left: 12%;
+      top: -80px;
+      transform: rotate(18deg);
+      animation: strike 4s infinite;
+    }
+
+    .bolt:nth-child(2) {
+      left: 78%;
+      top: -100px;
+      transform: rotate(-20deg);
+      animation: strike 5s infinite 1.5s;
+    }
+
+    .bolt:nth-child(3) {
+      left: 48%;
+      top: -150px;
+      transform: rotate(8deg);
+      animation: strike 6s infinite 3s;
+    }
+
+    .bolt:nth-child(4) {
+      left: 92%;
+      top: 20%;
+      transform: rotate(70deg);
+      animation: strike 4.5s infinite 2.2s;
+    }
+
+    .bolt:nth-child(5) {
+      left: 3%;
+      top: 30%;
+      transform: rotate(-65deg);
+      animation: strike 5.5s infinite 4s;
+    }
+
+    @keyframes strike {
+      0%, 88%, 100% {
+        opacity: 0;
+      }
+
+      89% {
+        opacity: 1;
+      }
+
+      90% {
+        opacity: 0.1;
+      }
+
+      91% {
+        opacity: 1;
+      }
+
+      92% {
+        opacity: 0;
+      }
+
+      93% {
+        opacity: 0.8;
+      }
+
+      94% {
+        opacity: 0;
+      }
+    }
+
+    /* Red atmospheric glow */
+
+    .red-glow {
+      position: fixed;
+      width: 700px;
+      height: 700px;
+      border-radius: 50%;
+      background: rgba(255, 0, 0, 0.12);
+      filter: blur(100px);
+      animation: pulse 4s ease-in-out infinite;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    @keyframes pulse {
+      0%, 100% {
+        transform: scale(0.8);
+        opacity: 0.5;
+      }
+
+      50% {
+        transform: scale(1.15);
+        opacity: 0.9;
+      }
+    }
+
+    /* =========================
+       MAIN CARD
+       ========================= */
+
+    main {
+      position: relative;
+      z-index: 2;
+      width: min(92%, 850px);
+      text-align: center;
+      padding: 45px 30px;
+      border: 1px solid rgba(255, 0, 0, 0.45);
+      border-radius: 28px;
+      background: rgba(5, 0, 0, 0.72);
+      backdrop-filter: blur(15px);
+      box-shadow:
+        0 0 30px rgba(255, 0, 0, 0.15),
+        inset 0 0 30px rgba(255, 0, 0, 0.04);
+    }
+
+    .tag {
+      display: inline-block;
+      color: #ff4d4d;
+      font-size: 0.8rem;
+      font-weight: 800;
+      letter-spacing: 5px;
+      text-transform: uppercase;
+      margin-bottom: 18px;
+      text-shadow: 0 0 12px red;
+    }
+
+    /* =========================
+       EMIL PICTURE
+       ========================= */
+
+    .profile-picture {
+      width: 180px;
+      height: 180px;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 4px solid #ff0000;
+      box-shadow:
+        0 0 10px #ff0000,
+        0 0 30px rgba(255, 0, 0, 0.8),
+        0 0 70px rgba(255, 0, 0, 0.3);
+      margin-bottom: 28px;
+      animation: pictureGlow 2.5s ease-in-out infinite;
+    }
+
+    @keyframes pictureGlow {
+      0%, 100% {
+        box-shadow:
+          0 0 10px #ff0000,
+          0 0 30px rgba(255, 0, 0, 0.7),
+          0 0 60px rgba(255, 0, 0, 0.2);
+      }
+
+      50% {
+        box-shadow:
+          0 0 15px #ff0000,
+          0 0 45px rgba(255, 0, 0, 1),
+          0 0 90px rgba(255, 0, 0, 0.4);
+      }
+    }
+
+    /* =========================
+       TYPEWRITER
+       ========================= */
+
+    .typewriter {
+      display: inline-block;
+      min-height: 1.2em;
+      font-size: clamp(4rem, 12vw, 8rem);
+      line-height: 1;
+      font-weight: 900;
+      letter-spacing: 4px;
+      color: #fff;
+      text-shadow:
+        0 0 5px #fff,
+        0 0 15px #ff0000,
+        0 0 35px #ff0000,
+        0 0 70px rgba(255, 0, 0, 0.7);
+      border-right: 5px solid #ff0000;
+      padding-right: 12px;
+      animation: cursorBlink 0.7s step-end infinite;
+    }
+
+    @keyframes cursorBlink {
+      50% {
+        border-color: transparent;
+      }
+    }
+
+    .subtitle {
+      margin-top: 22px;
+      color: #aaa;
+      font-size: 1.05rem;
+      letter-spacing: 2px;
+    }
+
+    .subtitle span {
+      color: #ff2222;
+      font-weight: bold;
+    }
+
+    /* =========================
+       BUTTONS
+       ========================= */
+
+    nav {
+      margin-top: 38px;
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    nav a {
+      min-width: 150px;
+      color: white;
+      background: linear-gradient(135deg, #d40000, #ff1717);
+      padding: 15px 24px;
+      border-radius: 12px;
+      text-decoration: none;
+      font-weight: 800;
+      letter-spacing: 1px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      box-shadow: 0 0 15px rgba(255, 0, 0, 0.25);
+      transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease;
+    }
+
+    nav a:hover {
+      transform: translateY(-4px) scale(1.03);
+      background: linear-gradient(135deg, #ff0000, #ff4444);
+      box-shadow:
+        0 0 15px red,
+        0 0 35px rgba(255, 0, 0, 0.6);
+    }
+
+    nav a:active {
+      transform: scale(0.97);
+    }
+
+    /* =========================
+       MUSIC STATUS
+       ========================= */
+
+    .music-status {
+      margin-top: 30px;
+      color: #666;
+      font-size: 0.8rem;
+      letter-spacing: 1px;
+    }
+
+    .music-dot {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      background: #ff0000;
+      border-radius: 50%;
+      margin-right: 7px;
+      box-shadow: 0 0 10px red;
+      animation: musicPulse 1s infinite;
+    }
+
+    @keyframes musicPulse {
+      50% {
+        opacity: 0.25;
+        transform: scale(0.7);
+      }
+    }
+
+    /* =========================
+       MOBILE
+       ========================= */
+
+    @media (max-width: 600px) {
+      main {
+        padding: 35px 18px;
+      }
+
+      .profile-picture {
+        width: 140px;
+        height: 140px;
+      }
+
+      .typewriter {
+        font-size: 4rem;
+      }
+
+      nav {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      nav a {
+        width: 80%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Red lightning -->
+  <div class="lightning">
+    <div class="bolt"></div>
+    <div class="bolt"></div>
+    <div class="bolt"></div>
+    <div class="bolt"></div>
+    <div class="bolt"></div>
+  </div>
+
+  <div class="red-glow"></div>
+
+  <!-- Main content -->
+  <main>
+
+    <div class="tag">WELCOME</div>
+
+    <!-- Put emil-picture.jpg in the same folder as this index.html -->
+    <img
+      src="emil-picture.jpg"
+      alt="Emil"
+      class="profile-picture"
+    >
+
+    <div
+      id="typewriter"
+      class="typewriter"
+      aria-live="polite"
+    ></div>
+
+    <p class="subtitle">
+      <span>EMIL</span> • THE ONE AND ONLY
+    </p>
+
+    <nav>
+      <a href="snacks.html">🍫 Snacks</a>
+      <a href="cashapp.html">💸 Cash App</a>
+    </nav>
+
+    <div class="music-status">
+      <span class="music-dot"></span>
+      Jane! is playing
+    </div>
+
+  </main>
+
+  <!--
+    Put Jane!.mp3 in the SAME folder as index.html.
+    The browser will automatically use it from the repo.
+  -->
+  <audio
+    id="music"
+    src="Jane!.mp3"
+    autoplay
+    loop
+    preload="auto">
+  </audio>
+
+  <script>
+    /* =========================
+       TYPEWRITER
+       ========================= */
+
+    const text = "Emil";
+    const typewriter = document.getElementById("typewriter");
+
+    let charIndex = 0;
+    let deleting = false;
+
+    function typeWriter() {
+
+      if (!deleting) {
+        charIndex++;
+
+        typewriter.textContent =
+          text.slice(0, charIndex);
+
+        if (charIndex === text.length) {
+          deleting = true;
+
+          setTimeout(typeWriter, 1800);
+          return;
+        }
+
+        setTimeout(typeWriter, 180);
+
+      } else {
+
+        charIndex--;
+
+        typewriter.textContent =
+          text.slice(0, charIndex);
+
+        if (charIndex === 0) {
+          deleting = false;
+
+          setTimeout(typeWriter, 500);
+          return;
+        }
+
+        setTimeout(typeWriter, 100);
+      }
+    }
+
+    typeWriter();
+
+
+    /* =========================
+       MUSIC
+       ========================= */
+
+    const music = document.getElementById("music");
+
+    music.volume = 0.5;
+
+    function startMusic() {
+      music.play().catch(() => {
+        // Browsers may block autoplay until the user interacts.
+      });
+    }
+
+    window.addEventListener("load", startMusic);
+
+    document.addEventListener("click", startMusic, {
+      once: true
+    });
+
+    document.addEventListener("keydown", startMusic, {
+      once: true
+    });
+  </script>
+
+</body>
+</html>
